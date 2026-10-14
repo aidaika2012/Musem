@@ -1,0 +1,6 @@
+.foods{
+    display: flex;
+    gap: 21px;
+    flex-wrap: wrap;
+    justify-content: center;
+}

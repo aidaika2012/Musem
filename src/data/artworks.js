@@ -1,0 +1,133 @@
+import { heroImg, galleryImg, exhibitImg, scienceImg } from '../assets/index.js'
+
+export const artworks = [
+  {
+    id: 1,
+    title: "Woman in the Garden",
+    artist: "Claude Monet",
+    year: "1866",
+    material: "Oil on canvas",
+    category: "Classical Art",
+    location: "Gallery B, Room 3",
+    image: heroImg,
+    description:
+      "A luminous early work depicting a woman surrounded by blooming flowers, painted entirely outdoors. The painting anticipates the radical light experiments that would define Impressionism.",
+    dimensions: "255 × 205 cm",
+    collection: "Permanent Collection",
+  },
+  {
+    id: 2,
+    title: "The Lion Hunt Relief",
+    artist: "Unknown — Neo-Assyrian",
+    year: "c. 645 BCE",
+    material: "Gypsum alabaster",
+    category: "Ancient History",
+    location: "Gallery A, Room 1",
+    image: galleryImg,
+    description:
+      "A masterpiece of Assyrian royal propaganda depicting King Ashurbanipal in a lion hunt. The dynamic composition and precise carving reveal a sophisticated sculptural tradition.",
+    dimensions: "160 × 130 cm",
+    collection: "Antiquities Collection",
+  },
+  {
+    id: 3,
+    title: "Composition VIII",
+    artist: "Wassily Kandinsky",
+    year: "1923",
+    material: "Oil on canvas",
+    category: "Modern Art",
+    location: "Gallery E, Room 2",
+    image: scienceImg,
+    description:
+      "One of Kandinsky's most celebrated works, this intricate composition unites geometric forms, primary colours and abstract shapes in a complex visual symphony conceived as pure music for the eye.",
+    dimensions: "140 × 201 cm",
+    collection: "Modern Art Collection",
+  },
+  {
+    id: 4,
+    title: "Data Erosion No. 7",
+    artist: "Yuki Tanaka",
+    year: "2024",
+    material: "Generative video, single-channel projection",
+    category: "Contemporary Art",
+    location: "Gallery C, Room 4",
+    image: exhibitImg,
+    description:
+      "A meditative loop that transforms corrupted satellite data into cascading visual noise. Tanaka questions our relationship with technology and the invisible infrastructure of modern life.",
+    dimensions: "Variable, duration: 22 min",
+    collection: "Contemporary Collection",
+  },
+  {
+    id: 5,
+    title: "Terracotta Warrior",
+    artist: "Unknown — Qin Dynasty",
+    year: "c. 210 BCE",
+    material: "Painted terracotta",
+    category: "Ancient History",
+    location: "Gallery A, Room 2",
+    image: galleryImg,
+    description:
+      "One of the legendary terracotta warriors created to guard the tomb of China's first emperor, Qin Shi Huang. Each figure was individually crafted with unique facial features.",
+    dimensions: "183 cm (height)",
+    collection: "Antiquities Collection",
+  },
+  {
+    id: 6,
+    title: "Circles in a Circle",
+    artist: "Paul Klee",
+    year: "1923",
+    material: "Oil and watercolour on canvas",
+    category: "Modern Art",
+    location: "Gallery E, Room 1",
+    image: scienceImg,
+    description:
+      "Klee's playful investigation of geometric harmony — concentric circles float within a larger disc, their overlapping edges creating subtle resonances of colour and rhythm.",
+    dimensions: "42 × 43 cm",
+    collection: "Modern Art Collection",
+  },
+  {
+    id: 7,
+    title: "Untitled (Mirror Labyrinth)",
+    artist: "Sofía Estrada",
+    year: "2025",
+    material: "Steel, mirror, neon light",
+    category: "Contemporary Art",
+    location: "Gallery C, Room 1",
+    image: exhibitImg,
+    description:
+      "An immersive walk-in installation in which visitors navigate an infinite corridor of fractured reflections. The work explores identity, repetition and the constructed self.",
+    dimensions: "8 × 4 × 3 m",
+    collection: "Contemporary Collection",
+  },
+  {
+    id: 8,
+    title: "Silk Panel with Dragon Motif",
+    artist: "Unknown — Tang Dynasty",
+    year: "c. 700 CE",
+    material: "Woven silk, gold thread",
+    category: "Ancient History",
+    location: "Gallery D, Room 2",
+    image: heroImg,
+    description:
+      "A rare surviving example of Tang Dynasty silk luxury textile, once traded along the Silk Road. The stylised dragon rendered in gold thread symbolises imperial power and cosmic energy.",
+    dimensions: "180 × 60 cm",
+    collection: "Silk Road Collection",
+  },
+  {
+    id: 9,
+    title: "Nomadic Felt Carpet (Shyrdak)",
+    artist: "Traditional Kyrgyz",
+    year: "19th century",
+    material: "Wool felt, natural dyes",
+    category: "Cultural Heritage",
+    location: "Gallery F, Room 1",
+    image: galleryImg,
+    description:
+      "A masterwork of Kyrgyz felt-making tradition, the shyrdak's bold geometric patterns encode cosmological symbols and clan histories passed down through generations of nomadic craftswomen.",
+    dimensions: "300 × 200 cm",
+    collection: "Cultural Heritage Collection",
+  },
+]
+
+export const getArtworkById = (id) =>
+  artworks.find((a) => a.id === Number(id))

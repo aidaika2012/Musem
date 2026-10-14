@@ -1,0 +1,29 @@
+.in{
+    width: 345px;
+}
+.header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 1222px;
+    margin: auto;
+}
+.link{
+    background-color: #1e1b17;
+    border: none;
+    color: rgb(236, 234, 231);
+    padding: 12px;
+    font-size: 21px;
+    border-radius: 6px;        
+}
+
+.link:hover{
+    background-color: rgb(254, 173, 21);
+
+    
+}
+.input{
+    display: flex;
+    gap: 11px;
+    align-items: center;
+}
