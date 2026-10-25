@@ -6,6 +6,19 @@ import { useTranslation } from '../../i18n/useTranslation'
 
 const languages = ['EN', 'KG', 'RU', 'ZH']
 
+function ThemeIcon({ isDark }) {
+  return isDark ? (
+    <svg aria-hidden="true" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <circle cx="12" cy="12" r="4" strokeWidth="1.7" />
+      <path strokeWidth="1.7" strokeLinecap="round" d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42" />
+    </svg>
+  ) : (
+    <svg aria-hidden="true" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" d="M20.3 15.4A8.5 8.5 0 0 1 8.6 3.7 8.5 8.5 0 1 0 20.3 15.4Z" />
+    </svg>
+  )
+}
+
 export default function Header() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
@@ -89,9 +102,9 @@ export default function Header() {
             </div>
 
             <button type="button" onClick={() => setTheme(isDark ? 'light' : 'dark')}
-              aria-label="Toggle color theme"
+              aria-label={`Switch to ${isDark ? 'light' : 'dark'} theme`}
               className={`hidden items-center gap-2 rounded-full border border-white/20 bg-white/5 px-3 py-1.5 text-[0.65rem] font-medium uppercase tracking-[0.18em] transition-colors duration-300 md:flex ${navColor}`}>
-              <span aria-hidden="true">{isDark ? '?' : '?'}</span>
+              <ThemeIcon isDark={isDark} />
               <span>{isDark ? 'Day' : 'Night'}</span>
             </button>
 
@@ -160,7 +173,9 @@ export default function Header() {
               </div>
 
               <button type="button" onClick={() => setTheme(isDark ? 'light' : 'dark')}
-                className="text-[0.7rem] font-medium uppercase tracking-[0.2em] text-[#6b6b6b] transition-colors hover:text-white">
+                aria-label={`Switch to ${isDark ? 'light' : 'dark'} theme`}
+                className="flex items-center gap-2 text-[0.7rem] font-medium uppercase tracking-[0.2em] text-[#6b6b6b] transition-colors hover:text-white">
+                <ThemeIcon isDark={isDark} />
                 {isDark ? 'Day mode' : 'Night mode'}
               </button>
 
