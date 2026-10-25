@@ -10,19 +10,19 @@ import scienceImg from '../assets/image copy 3.png'
 gsap.registerPlugin(ScrollTrigger)
 
 const timelineData = [
-  { year: '1890', eventKey: 'Museum founded by Royal Decree', descKey: 'The museum opens its doors with a founding collection of 200 artefacts donated by explorer Nikolai Przhevalsky.' },
-  { year: '1925', eventKey: 'First major archaeological collection', descKey: 'Following expeditions to the Tian Shan mountains, 3,000 objects from the Silk Road era enter the collection.' },
-  { year: '1960', eventKey: 'East Wing expansion', descKey: 'A modernist extension doubles exhibition space and introduces the first dedicated gallery for Central Asian textiles.' },
-  { year: '1991', eventKey: 'Independence — national museum status', descKey: 'Following Kyrgyz independence, the museum is re-established as the National Museum of Art and Culture.' },
-  { year: '2008', eventKey: 'Contemporary Art wing opens', descKey: "A new wing dedicated to living artists opens, cementing the museum's role as a hub for contemporary culture." },
-  { year: '2026', eventKey: 'Digital Museum Experience', descKey: 'The museum launches its digital platform — bringing the collection to audiences around the world for the first time.' },
+  { year: '1890', eventKey: 'about_tl1_event', descKey: 'about_tl1_desc' },
+  { year: '1925', eventKey: 'about_tl2_event', descKey: 'about_tl2_desc' },
+  { year: '1960', eventKey: 'about_tl3_event', descKey: 'about_tl3_desc' },
+  { year: '1991', eventKey: 'about_tl4_event', descKey: 'about_tl4_desc' },
+  { year: '2008', eventKey: 'about_tl5_event', descKey: 'about_tl5_desc' },
+  { year: '2026', eventKey: 'about_tl6_event', descKey: 'about_tl6_desc' },
 ]
 
 const team = [
-  { name: 'Dr. Aisha Karimova',  role: 'Director',                    image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80' },
-  { name: 'Prof. Jean-Luc Moreau', role: 'Chief Curator',             image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80' },
-  { name: 'Sofía Reyes',         role: 'Contemporary Art Curator',     image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80' },
-  { name: 'Anar Bekova',         role: 'Cultural Heritage Curator',    image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80' },
+  { nameKey: 'about_team1_name', roleKey: 'about_team1_role', image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80' },
+  { nameKey: 'about_team2_name', roleKey: 'about_team2_role', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80' },
+  { nameKey: 'about_team3_name', roleKey: 'about_team3_role', image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80' },
+  { nameKey: 'about_team4_name', roleKey: 'about_team4_role', image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80' },
 ]
 
 export default function About() {
@@ -109,8 +109,8 @@ export default function About() {
                     <p className="font-serif text-[#c8a96e] text-sm md:text-base font-medium">{item.year}</p>
                   </div>
                   <div className="pb-2 flex-1">
-                    <h3 className="font-serif text-xl md:text-2xl text-[#1a1a1a] mb-1">{item.eventKey}</h3>
-                    <p className="text-[#6b6b6b] text-sm leading-relaxed">{item.descKey}</p>
+                    <h3 className="font-serif text-xl md:text-2xl text-[#1a1a1a] mb-1">{t(item.eventKey)}</h3>
+                    <p className="text-[#6b6b6b] text-sm leading-relaxed">{t(item.descKey)}</p>
                   </div>
                 </div>
               ))}
@@ -124,12 +124,12 @@ export default function About() {
           <h2 className="font-serif text-4xl mb-10">{t('about_team_title')}</h2>
           <div ref={teamRef} className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {team.map(member => (
-              <div key={member.name} className="team-card">
+              <div key={member.nameKey} className="team-card">
                 <div className="img-zoom rounded-2xl overflow-hidden aspect-[3/4] mb-4">
-                  <img src={member.image} alt={member.name} className="w-full h-full object-cover" />
+                  <img src={member.image} alt={t(member.nameKey)} className="w-full h-full object-cover" />
                 </div>
-                <p className="font-serif text-lg text-[#1a1a1a]">{member.name}</p>
-                <p className="text-[0.72rem] text-[#9b9490] tracking-[0.1em] uppercase mt-0.5">{member.role}</p>
+                <p className="font-serif text-lg text-[#1a1a1a]">{t(member.nameKey)}</p>
+                <p className="text-[0.72rem] text-[#9b9490] tracking-[0.1em] uppercase mt-0.5">{t(member.roleKey)}</p>
               </div>
             ))}
           </div>

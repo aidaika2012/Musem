@@ -9,7 +9,7 @@ import { useTranslation } from '../i18n/useTranslation'
 gsap.registerPlugin(ScrollTrigger)
 
 export default function Collection() {
-  const { t } = useTranslation()
+  const { t, localize } = useTranslation()
   const heroRef  = useRef(null)
   const statsRef = useRef(null)
 
@@ -52,23 +52,25 @@ export default function Collection() {
       </div>
 
       <div className="px-6 md:px-12 max-w-[1400px] mx-auto space-y-6 mb-20">
-        {collections.map(col => (
+        {collections.map(col => {
+          const item = localize(col)
+          return (
           <Link key={col.id} to={`/collection/${col.id}`}
             className="group flex flex-col md:flex-row overflow-hidden bg-white rounded-3xl border border-[#e0d9d0] hover:border-[#c8a96e] transition-all duration-400 hover:-translate-y-0.5 card-shadow">
             <div className="img-zoom w-full md:w-72 aspect-[4/3] md:aspect-auto flex-shrink-0">
-              <img src={col.image} alt={col.title} className="w-full h-full object-cover" />
+              <img src={col.image} alt={item.title} className="w-full h-full object-cover" />
             </div>
             <div className="p-8 flex flex-col justify-between flex-1">
               <div>
                 <div className="flex items-center justify-between mb-3">
                   <span className="section-label">{col.number}</span>
-                  <span className="section-label">{col.count}</span>
+                  <span className="section-label">{item.count}</span>
                 </div>
                 <h2 className="font-serif text-3xl md:text-4xl text-[#1a1a1a] mb-1 group-hover:text-[#c8a96e] transition-colors">
-                  {col.title}
+                  {item.title}
                 </h2>
-                <p className="text-[#9b9490] text-sm mb-4">{col.subtitle}</p>
-                <p className="text-[#6b6b6b] text-sm leading-relaxed max-w-lg">{col.description}</p>
+                <p className="text-[#9b9490] text-sm mb-4">{item.subtitle}</p>
+                <p className="text-[#6b6b6b] text-sm leading-relaxed max-w-lg">{item.description}</p>
               </div>
               <div className="flex items-center gap-3 mt-6 text-[0.72rem] font-medium tracking-[0.12em] uppercase text-[#1a1a1a] group-hover:text-[#c8a96e] transition-colors">
                 {t('col_explore_btn')}
@@ -76,7 +78,7 @@ export default function Collection() {
               </div>
             </div>
           </Link>
-        ))}
+        )})}
       </div>
 
       <div className="px-6 md:px-12 max-w-[1400px] mx-auto">
@@ -87,15 +89,17 @@ export default function Collection() {
           </div>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-          {artworks.map(a => (
+          {artworks.map(a => {
+            const art = localize(a)
+            return (
             <Link key={a.id} to={`/artworks/${a.id}`} className="group">
               <div className="img-zoom rounded-2xl overflow-hidden aspect-[3/4] mb-3">
-                <img src={a.image} alt={a.title} className="w-full h-full object-cover" />
+                <img src={a.image} alt={art.title} className="w-full h-full object-cover" />
               </div>
-              <p className="font-serif text-sm text-[#1a1a1a] group-hover:text-[#c8a96e] transition-colors leading-snug">{a.title}</p>
+              <p className="font-serif text-sm text-[#1a1a1a] group-hover:text-[#c8a96e] transition-colors leading-snug">{art.title}</p>
               <p className="text-[0.7rem] text-[#9b9490] mt-0.5">{a.artist} · {a.year}</p>
             </Link>
-          ))}
+          )})}
         </div>
       </div>
     </div>

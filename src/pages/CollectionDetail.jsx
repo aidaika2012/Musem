@@ -6,7 +6,7 @@ import { useTranslation } from '../i18n/useTranslation'
 
 export default function CollectionDetail() {
   const { id } = useParams()
-  const { t }  = useTranslation()
+  const { t, localize }  = useTranslation()
   const col    = getCollectionById(id)
 
   if (!col) return (
@@ -16,7 +16,9 @@ export default function CollectionDetail() {
     </div>
   )
 
+  const item = localize(col)
   const colArtworks = artworks.filter(a => a.category === col.title)
+  const singleArtwork = colArtworks.length === 1 ? localize(colArtworks[0]) : null
 
   return (
     <div className="pt-20 pb-24">
@@ -25,8 +27,8 @@ export default function CollectionDetail() {
         <div className="absolute inset-0 overlay-dark" />
         <div className="absolute bottom-10 left-8 md:left-16 text-white">
           <p className="section-label text-white/70 mb-2">{col.number}</p>
-          <h1 className="font-serif text-4xl md:text-6xl">{col.title}</h1>
-          <p className="text-white/70 mt-2">{col.subtitle}</p>
+          <h1 className="font-serif text-4xl md:text-6xl">{item.title}</h1>
+          <p className="text-white/70 mt-2">{item.subtitle}</p>
         </div>
       </div>
 
@@ -36,16 +38,16 @@ export default function CollectionDetail() {
           <span>/</span>
           <Link to="/collection" className="hover:text-[#1a1a1a]">{t('nav_collection')}</Link>
           <span>/</span>
-          <span className="text-[#1a1a1a]">{col.title}</span>
+          <span className="text-[#1a1a1a]">{item.title}</span>
         </nav>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
-          <p className="text-[#1a1a1a] text-lg leading-relaxed">{col.description}</p>
+          <p className="text-[#1a1a1a] text-lg leading-relaxed">{item.description}</p>
           <div className="grid grid-cols-3 gap-4">
             {[
-              { label: t('stat_artworks'), value: col.stats.artworks },
-              { label: 'Period',           value: col.stats.period },
-              { label: t('stat_galleries'),value: col.stats.galleries },
+              { label: t('stat_artworks'),  value: col.stats.artworks },
+              { label: t('col_period'),     value: col.stats.period },
+              { label: t('stat_galleries'), value: col.stats.galleries },
             ].map(s => (
               <div key={s.label} className="bg-[#f0ebe3] rounded-2xl p-5 text-center">
                 <p className="font-serif text-2xl text-[#1a1a1a] mb-1">{s.value}</p>
@@ -64,18 +66,39 @@ export default function CollectionDetail() {
             <p className="font-serif text-2xl mb-2">{t('col_coming_soon')}</p>
             <p className="text-sm">{t('col_expanding')}</p>
           </div>
+        ) : singleArtwork ? (
+          <Link to={`/artworks/${colArtworks[0].id}`} className="group grid grid-cols-1 md:grid-cols-2 overflow-hidden rounded-2xl border border-[#e0d9d0] bg-white">
+            <div className="img-zoom aspect-[4/5] md:aspect-auto md:min-h-[520px]">
+              <img src={colArtworks[0].image} alt={singleArtwork.title} className="w-full h-full object-cover" />
+            </div>
+            <div className="flex flex-col justify-center p-7 md:p-12 lg:p-16">
+              <p className="section-label mb-3">{singleArtwork.category}</p>
+              <h3 className="font-serif text-3xl md:text-4xl text-[#1a1a1a] group-hover:text-[#c8a96e] transition-colors">
+                {singleArtwork.title}
+              </h3>
+              <p className="text-[#9b9490] mt-3">{colArtworks[0].artist} · {colArtworks[0].year}</p>
+              <p className="text-[#6b6b6b] text-sm mt-2">{singleArtwork.material}</p>
+              <p className="text-[#6b6b6b] leading-relaxed mt-8">{singleArtwork.description}</p>
+              <span className="section-label mt-8">{singleArtwork.location}</span>
+              <span className="mt-8 inline-flex items-center gap-2 text-sm font-medium uppercase tracking-[0.1em] text-[#1a1a1a] group-hover:text-[#c8a96e]">
+                {t('exh_view')} <span className="transition-transform group-hover:translate-x-1">→</span>
+              </span>
+            </div>
+          </Link>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {colArtworks.map(a => (
+            {colArtworks.map(a => {
+              const art = localize(a)
+              return (
               <Link key={a.id} to={`/artworks/${a.id}`} className="group">
                 <div className="img-zoom rounded-2xl overflow-hidden aspect-[4/5] mb-4">
-                  <img src={a.image} alt={a.title} className="w-full h-full object-cover" />
+                  <img src={a.image} alt={art.title} className="w-full h-full object-cover" />
                 </div>
-                <p className="font-serif text-xl text-[#1a1a1a] group-hover:text-[#c8a96e] transition-colors">{a.title}</p>
+                <p className="font-serif text-xl text-[#1a1a1a] group-hover:text-[#c8a96e] transition-colors">{art.title}</p>
                 <p className="text-[#9b9490] text-sm mt-1">{a.artist} · {a.year}</p>
-                <p className="text-[#6b6b6b] text-sm mt-1">{a.material}</p>
+                <p className="text-[#6b6b6b] text-sm mt-1">{art.material}</p>
               </Link>
-            ))}
+            )})}
           </div>
         )}
       </div>

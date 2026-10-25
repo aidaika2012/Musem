@@ -49,8 +49,8 @@ export default function Footer() {
             <div>
               <p className="text-[0.65rem] tracking-[0.2em] uppercase text-white/30 mb-5">{t('footer_visit')}</p>
               <ul className="flex flex-col gap-3 text-white/60 text-sm">
-                <li>Tue–Fri: 10–18</li>
-                <li>Sat–Sun: 10–19</li>
+                <li>{t('pv_tue_fri')}: 10–18</li>
+                <li>{t('pv_sat_sun')}: 10–19</li>
                 <li>{t('footer_mon')}</li>
                 <li className="mt-2">
                   <Link to="/booking" className="text-[#c8a96e] hover:text-white transition-colors">

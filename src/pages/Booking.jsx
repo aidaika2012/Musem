@@ -1,6 +1,12 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
+import PhoneInput from 'react-phone-number-input'
+import { isValidPhoneNumber } from 'react-phone-number-input'
+import enPhoneLabels from 'react-phone-number-input/locale/en.json'
+import ruPhoneLabels from 'react-phone-number-input/locale/ru.json'
+import zhPhoneLabels from 'react-phone-number-input/locale/zh.json'
+import 'react-phone-number-input/style.css'
 import { useApp } from '../context/AppContext'
 import { useTranslation } from '../i18n/useTranslation'
 
@@ -14,11 +20,16 @@ const slideVariants = {
 }
 
 export default function Booking() {
-  const { t } = useTranslation()
+  const { t, language } = useTranslation()
+  const phoneLabels = language === 'RU' ? ruPhoneLabels : language === 'ZH' ? zhPhoneLabels : enPhoneLabels
   const { addBooking, user } = useApp()
   const [step, setStep]           = useState(0)
   const [dir,  setDir]            = useState(1)
   const [confirmed, setConfirmed] = useState(null)
+  const [saving, setSaving] = useState(false)
+  const [saveError, setSaveError] = useState('')
+  const [phoneTouched, setPhoneTouched] = useState(false)
+  const [detailsTouched, setDetailsTouched] = useState(false)
 
   const [date,    setDate]    = useState('')
   const [time,    setTime]    = useState('')
@@ -33,10 +44,22 @@ export default function Booking() {
 
   const totalTickets = Object.values(tickets).reduce((a, b) => a + b, 0)
   const totalPrice   = Object.entries(tickets).reduce((s, [k, v]) => s + v * PRICES[k], 0)
+  const nameIsValid = Boolean(form.name.trim())
+  const emailIsValid = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(form.email.trim())
+  const phoneIsValid = isValidPhoneNumber(form.phone || '')
 
-  const handleConfirm = () => {
-    const booking = addBooking({ date, time, tickets, totalPrice, name: form.name, email: form.email, phone: form.phone })
-    setConfirmed(booking)
+  const handleConfirm = async () => {
+    setSaving(true)
+    setSaveError('')
+    try {
+      const booking = await addBooking({ date, time, tickets, totalPrice, name: form.name.trim(), email: form.email.trim(), phone: form.phone })
+      setConfirmed(booking)
+    } catch (error) {
+      console.error('Could not save booking:', error)
+      setSaveError('Не удалось сохранить бронирование. Проверьте подключение и попробуйте снова.')
+    } finally {
+      setSaving(false)
+    }
   }
 
   const today = new Date().toISOString().split('T')[0]
@@ -177,15 +200,50 @@ export default function Booking() {
                     {[
                       { label: t('book_name'),  key: 'name',  type: 'text',  ph: t('book_name_ph') },
                       { label: t('book_email'), key: 'email', type: 'email', ph: t('book_email_ph') },
-                      { label: t('book_phone'), key: 'phone', type: 'tel',   ph: t('book_phone_ph') },
                     ].map(f => (
                       <div key={f.key}>
-                        <label className="section-label block mb-1.5">{f.label}</label>
+                        <label className="section-label block mb-1.5" htmlFor={`booking-${f.key}`}>{f.label} *</label>
                         <input type={f.type} value={form[f.key]} placeholder={f.ph}
+                          id={`booking-${f.key}`}
+                          required
+                          aria-invalid={detailsTouched && (f.key === 'name' ? !nameIsValid : !emailIsValid)}
+                          aria-describedby={detailsTouched ? `booking-${f.key}-error` : undefined}
+                          onBlur={() => setDetailsTouched(true)}
                           onChange={e => setForm(v => ({ ...v, [f.key]: e.target.value }))}
                           className="w-full border border-[#e0d9d0] rounded-xl px-4 py-3 text-[#1a1a1a] outline-none focus:border-[#c8a96e] transition-colors text-sm placeholder:text-[#c0b9b0]" />
+                        {detailsTouched && (f.key === 'name' ? !nameIsValid : !emailIsValid) && (
+                          <p id={`booking-${f.key}-error`} className="text-red-600 text-xs mt-2" aria-live="polite">
+                            {t(f.key === 'name' ? 'book_name_invalid' : 'book_email_invalid')}
+                          </p>
+                        )}
                       </div>
                     ))}
+                    <div>
+                      <label className="section-label block mb-1.5" htmlFor="booking-phone">{t('book_phone')} *</label>
+                      <PhoneInput
+                        international
+                        defaultCountry="KZ"
+                        countryCallingCodeEditable={false}
+                        labels={phoneLabels}
+                        value={form.phone || undefined}
+                        onChange={phone => setForm(previous => ({ ...previous, phone: phone || '' }))}
+                        onBlur={() => setPhoneTouched(true)}
+                        placeholder={t('book_phone_ph')}
+                        autoComplete="tel"
+                        numberInputProps={{
+                          id: 'booking-phone',
+                          'aria-required': true,
+                          'aria-invalid': phoneTouched && !phoneIsValid,
+                          'aria-describedby': phoneTouched && !phoneIsValid ? 'booking-phone-error' : undefined,
+                        }}
+                        className={`booking-phone-input${phoneTouched && !phoneIsValid ? ' booking-phone-input--invalid' : ''}`}
+                      />
+                      {phoneTouched && !phoneIsValid && (
+                        <p id="booking-phone-error" className="text-red-600 text-xs mt-2" aria-live="polite">
+                          {t('book_phone_invalid')}
+                        </p>
+                      )}
+                    </div>
                   </div>
                 </div>
               )}
@@ -196,8 +254,8 @@ export default function Booking() {
                   <h2 className="font-serif text-2xl mb-6">{t('book_confirm_title')}</h2>
                   <div className="space-y-3 mb-6">
                     {[
-                      { label: t('book_name'),    value: form.name },
-                      { label: t('book_email'),   value: form.email },
+                      { label: t('book_name'),    value: form.name.trim() },
+                      { label: t('book_email'),   value: form.email.trim() },
                       { label: t('book_phone'),   value: form.phone },
                       { label: t('book_step_date'), value: date },
                       { label: t('book_step_time'), value: time },
@@ -210,9 +268,10 @@ export default function Booking() {
                       </div>
                     ))}
                   </div>
-                  <button onClick={handleConfirm} className="btn-ticket w-full justify-center text-sm">
-                    {t('book_confirm_btn')}
+                  <button onClick={handleConfirm} disabled={saving} className="btn-ticket w-full justify-center text-sm disabled:opacity-50">
+                    {saving ? 'Сохраняем…' : t('book_confirm_btn')}
                   </button>
+                  {saveError && <p role="alert" className="text-red-600 text-sm mt-3">{saveError}</p>}
                 </div>
               )}
             </motion.div>
@@ -225,10 +284,17 @@ export default function Booking() {
             {t('book_back')}
           </button>
           {step < 4 && (
-            <button onClick={next}
+            <button onClick={() => {
+              if (step === 3) {
+                setDetailsTouched(true)
+                setPhoneTouched(true)
+                if (!nameIsValid || !emailIsValid || !phoneIsValid) return
+              }
+              next()
+            }}
               disabled={
                 (step === 0 && !date) || (step === 1 && !time) ||
-                (step === 2 && totalTickets === 0) || (step === 3 && (!form.name || !form.email))
+                (step === 2 && totalTickets === 0)
               }
               className="btn-ticket disabled:opacity-40 disabled:cursor-not-allowed">
               {t('book_continue')}

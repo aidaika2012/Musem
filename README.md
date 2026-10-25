@@ -11,6 +11,12 @@ npm run build      # продакшен үчүн түүжмө
 npm run lint       # ESLint
 ```
 
+## Telegram брондоо билдирүүлөрү
+
+`.env.example` файлын `.env` деп көчүрүп, `TELEGRAM_BOT_TOKEN` маанисине BotFather'дан алынган жаңы токенди жазыңыз. Токен чатта жарыяланып калгандыктан, эскисин BotFather аркылуу revoke кылып, жаңысын чыгарыңыз. `.env` Git'ке кошулбашы керек.
+
+`npm run dev` Vite менен Telegram API серверин бирге иштетет. Бронь MockAPI'ге ийгиликтүү сакталгандан кийин Telegram'га билдирүү жөнөтүлөт. Продакшнда `server.js` серверин өзүнчө жайгаштырып, `/api` жолун ага прокси кылыңыз; Telegram токенин браузерге же `VITE_` өзгөрмөсүнө салбаңыз.
+
 ## Технологиялар
 
 | Төркүм           | Китепчи                      |
@@ -31,6 +37,7 @@ src/
 │   └── index.js     # Боркул: heroImg, galleryImg, exhibitImg, scienceImg экспортторун берет
 ├── components/
 │   ├── home/        # Hero, CollectionHighlight, CollectionCards, PlanVisit, FeaturedExhibitions, ExhibitionFilter
+│   ├── ui/          # 17 reusable UI components: Button, Modal, FormField, SearchInput, cards, layout helpers
 │   ├── layout/      # Layout (framer-motion барак алыстары)
 │   ├── header/      # Header (навигация)
 │   ├── footer/      # Footer

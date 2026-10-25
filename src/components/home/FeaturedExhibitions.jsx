@@ -1,33 +1,35 @@
-import React, { useRef, useEffect, useState } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { getFeaturedExhibitions } from '../../data/exhibitions'
+import { useApp } from '../../context/AppContext'
 import { useTranslation } from '../../i18n/useTranslation'
+import IconButton from '../ui/IconButton'
 
 gsap.registerPlugin(ScrollTrigger)
 
 function ExhibitionCard({ ex, index }) {
-  const { t } = useTranslation()
+  const { t, localize } = useTranslation()
+  const item = localize(ex)
   return (
     <Link to={`/exhibitions/${ex.id}`}
       className="flex-shrink-0 w-[320px] md:w-[380px] group cursor-pointer">
       <div className="relative overflow-hidden rounded-2xl aspect-[4/5] mb-5">
-        <img src={ex.image} alt={ex.title}
+        <img src={ex.image} alt={item.title}
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.07]" />
         <span className="absolute top-4 left-4 text-white/60 font-serif text-sm">
           {String(index + 1).padStart(2, '0')}
         </span>
       </div>
       <div className="flex items-center gap-3 mb-2">
-        <span className="section-label">{ex.category}</span>
+        <span className="section-label">{item.category}</span>
         <span className="w-1 h-1 rounded-full bg-[#c0b9b0]" />
-        <span className="section-label">{ex.date}</span>
+        <span className="section-label">{item.date}</span>
       </div>
       <h3 className="font-serif text-2xl leading-tight mb-2 text-[#1a1a1a] group-hover:text-[#c8a96e] transition-colors duration-300">
-        {ex.title}
+        {item.title}
       </h3>
-      <p className="text-[#6b6b6b] text-sm leading-relaxed line-clamp-2 mb-4">{ex.description}</p>
+      <p className="text-[#6b6b6b] text-sm leading-relaxed line-clamp-2 mb-4">{item.description}</p>
       <span className="inline-flex items-center gap-2 text-[0.75rem] font-medium tracking-[0.12em] uppercase text-[#1a1a1a] group-hover:text-[#c8a96e] transition-colors duration-300">
         {t('feat_view')}
         <span className="transition-transform duration-300 group-hover:translate-x-1.5">→</span>
@@ -38,7 +40,9 @@ function ExhibitionCard({ ex, index }) {
 
 export default function FeaturedExhibitions() {
   const { t } = useTranslation()
-  const featured   = getFeaturedExhibitions()
+  const { adminExhibitions } = useApp()
+  const selected = adminExhibitions.filter(ex => ex.featured)
+  const featured = (selected.length ? selected : adminExhibitions).slice(0, 6)
   const sectionRef = useRef(null)
   const titleRef   = useRef(null)
   const trackRef   = useRef(null)
@@ -81,12 +85,12 @@ export default function FeaturedExhibitions() {
         </div>
         <div className="flex gap-3">
           {[{ dir: -1, label: '←', can: canPrev }, { dir: 1, label: '→', can: canNext }].map(({ dir, label, can }) => (
-            <button key={dir} onClick={() => scroll(dir)} disabled={!can} aria-label={label}
+            <IconButton key={dir} label={label} onClick={() => scroll(dir)} disabled={!can}
               className={`w-12 h-12 rounded-full border flex items-center justify-center transition-all duration-300
                 ${can ? 'border-[#1a1a1a] hover:bg-[#1a1a1a] hover:text-white text-[#1a1a1a]'
                       : 'border-[#e0d9d0] text-[#c0b9b0] cursor-not-allowed'}`}>
               {label}
-            </button>
+            </IconButton>
           ))}
         </div>
       </div>

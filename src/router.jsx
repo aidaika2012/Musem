@@ -12,6 +12,7 @@ import Login from './pages/Login'
 import Profile from './pages/Profile'
 import About from './pages/About'
 import Contact from './pages/Contact'
+import Admin from './pages/Admin'
 
 export const myRouter = createBrowserRouter([
   {
@@ -31,6 +32,7 @@ export const myRouter = createBrowserRouter([
       { path: 'profile',                element: <Profile /> },
       { path: 'about',                  element: <About /> },
       { path: 'contact',                element: <Contact /> },
+      { path: 'admin',                  element: <Admin /> },
     ],
   },
 ])

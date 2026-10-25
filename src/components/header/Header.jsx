@@ -10,11 +10,12 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [langOpen, setLangOpen] = useState(false)
-  const { language, setLanguage, user } = useApp()
+  const { language, setLanguage, user, theme, setTheme } = useApp()
   const { t } = useTranslation()
   const location = useLocation()
   const langRef = useRef(null)
   const isHomePage = location.pathname === '/'
+  const isDark = theme === 'dark'
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60)
@@ -34,22 +35,20 @@ export default function Header() {
 
   const navLinks = [
     { label: t('nav_exhibitions'), to: '/exhibitions' },
-    { label: t('nav_collection'),  to: '/collection' },
-    { label: t('nav_visit'),       to: '/visit' },
-    { label: t('nav_about'),       to: '/about' },
+    { label: t('nav_collection'), to: '/collection' },
+    { label: t('nav_visit'), to: '/visit' },
+    { label: t('nav_about'), to: '/about' },
   ]
 
-  const navColor = isHomePage && !scrolled ? 'text-white' : 'text-[#1a1a1a]'
-  const logoColor = isHomePage && !scrolled ? 'text-white' : 'text-[#1a1a1a]'
+  const navColor = (isHomePage && !scrolled) || isDark ? 'text-white' : 'text-[#1a1a1a]'
+  const logoColor = (isHomePage && !scrolled) || isDark ? 'text-white' : 'text-[#1a1a1a]'
+  const headerBackground = scrolled ? (isDark ? 'bg-[#111827]/90' : 'bg-[#f8f5f0]/90') : (isDark ? 'bg-[#111827]/70' : 'bg-transparent')
 
   return (
     <>
-      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500
-        ${scrolled ? 'bg-[#f8f5f0]/90 backdrop-blur-md shadow-sm py-3' : 'bg-transparent py-5'}`}>
-        <div className="max-w-[1400px] mx-auto px-6 flex items-center justify-between">
-
-          {/* Left nav */}
-          <nav className="hidden lg:flex items-center gap-8">
+      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${headerBackground} ${scrolled ? 'shadow-sm py-3' : 'py-5'}`}>
+        <div className="mx-auto flex max-w-[1400px] items-center justify-between px-6">
+          <nav className="hidden items-center gap-20 lg:flex">
             {navLinks.map(link => (
               <Link key={link.to} to={link.to}
                 className={`link-underline text-[0.75rem] font-medium tracking-[0.15em] uppercase transition-colors duration-300 ${navColor}`}>
@@ -58,21 +57,17 @@ export default function Header() {
             ))}
           </nav>
 
-          {/* Logo */}
           <Link to="/"
-            className={`font-serif text-2xl tracking-[0.35em] uppercase font-bold transition-colors duration-300 ${logoColor} absolute left-1/2 -translate-x-1/2`}>
+            className={`font-serif text-2xl font-bold uppercase tracking-[0.35em] transition-colors duration-300 ${logoColor} absolute left-1/2 -translate-x-1/2`}>
             MUSEUM
           </Link>
 
-          {/* Right */}
-          <div className="flex items-center gap-4 ml-auto">
-
-            {/* Language switcher */}
-            <div className="hidden md:block relative" ref={langRef}>
+          <div className="ml-auto flex items-center gap-8">
+            <div className="relative hidden md:block" ref={langRef}>
               <button onClick={() => setLangOpen(v => !v)}
-                className={`text-[0.7rem] font-medium tracking-[0.2em] uppercase flex items-center gap-1 transition-colors duration-300 ${navColor}`}>
+                className={`flex items-center gap-1 text-[0.7rem] font-medium uppercase tracking-[0.2em] transition-colors duration-300 ${navColor}`}>
                 {language}
-                <svg className={`w-3 h-3 transition-transform ${langOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className={`h-3 w-3 transition-transform ${langOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
@@ -81,11 +76,10 @@ export default function Header() {
                   <motion.div
                     initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }}
                     transition={{ duration: 0.2 }}
-                    className="absolute top-7 right-0 bg-[#f8f5f0] border border-[#e0d9d0] rounded-xl overflow-hidden shadow-lg min-w-[90px]">
+                    className="absolute right-0 top-7 min-w-[90px] overflow-hidden rounded-xl border border-[#e0d9d0] bg-[#f8f5f0] shadow-lg">
                     {languages.map(lang => (
                       <button key={lang} onClick={() => { setLanguage(lang); setLangOpen(false) }}
-                        className={`block w-full text-left px-4 py-2.5 text-[0.7rem] tracking-[0.15em] uppercase font-medium transition-colors hover:bg-[#e0d9d0]
-                          ${language === lang ? 'text-[#c8a96e]' : 'text-[#1a1a1a]'}`}>
+                        className={`block w-full px-4 py-2.5 text-left text-[0.7rem] font-medium uppercase tracking-[0.15em] transition-colors hover:bg-[#e0d9d0] ${language === lang ? 'text-[#c8a96e]' : 'text-[#1a1a1a]'}`}>
                         {lang}
                       </button>
                     ))}
@@ -94,22 +88,38 @@ export default function Header() {
               </AnimatePresence>
             </div>
 
-            {/* Profile */}
+            <button type="button" onClick={() => setTheme(isDark ? 'light' : 'dark')}
+              aria-label="Toggle color theme"
+              className={`hidden items-center gap-2 rounded-full border border-white/20 bg-white/5 px-3 py-1.5 text-[0.65rem] font-medium uppercase tracking-[0.18em] transition-colors duration-300 md:flex ${navColor}`}>
+              <span aria-hidden="true">{isDark ? '?' : '?'}</span>
+              <span>{isDark ? 'Day' : 'Night'}</span>
+            </button>
+
             <Link to={user ? '/profile' : '/login'}
-              className={`hidden md:flex items-center gap-1.5 text-[0.7rem] font-medium tracking-[0.15em] uppercase transition-colors duration-300 ${navColor}`}>
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              className={`hidden items-center gap-1.5 text-[0.7rem] font-medium uppercase tracking-[0.15em] transition-colors duration-300 md:flex ${navColor}`}>
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
                   d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
               </svg>
               {user ? user.name.split(' ')[0] : t('nav_profile')}
             </Link>
 
-            {/* Tickets */}
+            {user?.role === 'admin' && (
+              <Link to="/admin"
+                className={`hidden items-center gap-1.5 text-[0.7rem] font-medium uppercase tracking-[0.15em] transition-colors duration-300 md:flex ${navColor}`}>
+                <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
+                    d="M10.343 3.94c.09-.542.56-.94 1.11-.94h1.093c.55 0 1.02.398 1.11.94l.149.894c.07.424.384.764.78.93.398.164.855.142 1.205-.108l.737-.527a1.125 1.125 0 011.45.12l.773.774c.39.389.44 1.002.12 1.45l-.527.737c-.25.35-.272.806-.107 1.204.165.397.505.71.93.78l.893.15c.543.09.94.56.94 1.109v1.094c0 .55-.397 1.02-.94 1.11l-.893.149c-.425.07-.765.383-.93.78-.165.398-.143.854.107 1.204l.527.738c.32.447.269 1.06-.12 1.45l-.774.773a1.125 1.125 0 01-1.449.12l-.738-.527c-.35-.25-.806-.272-1.203-.107-.397.165-.71.505-.781.929l-.149.894c-.09.542-.56.94-1.11.94h-1.094c-.55 0-1.019-.398-1.11-.94l-.148-.894c-.071-.424-.384-.764-.781-.93-.398-.164-.854-.142-1.204.108l-.738.527c-.447.32-1.06.269-1.45-.12l-.773-.774a1.125 1.125 0 01-.12-1.45l.527-.737c.25-.35.273-.806.108-1.204-.165-.397-.505-.71-.93-.78l-.894-.15c-.542-.09-.94-.56-.94-1.109v-1.094c0-.55.398-1.02.94-1.11l.894-.149c.424-.07.765-.383.93-.78.165-.398.143-.854-.108-1.204l-.526-.738a1.125 1.125 0 01.12-1.45l.773-.773a1.125 1.125 0 011.45-.12l.737.527c.35.25.807.272 1.204.107.397-.165.71-.505.78-.929l.15-.894z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                {t('nav_admin')}
+              </Link>
+            )}
+
             <Link to="/booking" className="hidden md:block btn-ticket text-[0.7rem]">
               {t('nav_tickets')}
             </Link>
 
-            {/* Hamburger */}
             <button onClick={() => setMenuOpen(v => !v)} aria-label="Toggle menu"
               className={`flex flex-col gap-[5px] p-2 transition-colors duration-300 ${navColor}`}>
               <span className={`block h-px w-6 bg-current transition-all duration-300 ${menuOpen ? 'rotate-45 translate-y-[8.5px]' : ''}`} />
@@ -120,7 +130,6 @@ export default function Header() {
         </div>
       </header>
 
-      {/* Full-screen menu */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
@@ -128,44 +137,47 @@ export default function Header() {
             animate={{ opacity: 1, clipPath: 'inset(0 0 0% 0)' }}
             exit={{ opacity: 0, clipPath: 'inset(0 0 100% 0)' }}
             transition={{ duration: 0.5, ease: [0.77, 0, 0.175, 1] }}
-            className="fixed inset-0 z-40 bg-[#1a1a1a] flex flex-col items-center justify-center">
+            className="fixed inset-0 z-[60] flex flex-col items-center justify-center bg-[#1a1a1a]">
             <nav className="flex flex-col items-center gap-8">
-              {[...navLinks,
-                { label: t('nav_contact'), to: '/contact' },
-                { label: t('nav_booking'), to: '/booking' },
-              ].map((link, i) => (
-                <motion.div key={link.to}
-                  initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 + i * 0.07, duration: 0.5 }}>
-                  <Link to={link.to} onClick={() => setMenuOpen(false)}
-                    className="font-serif text-5xl md:text-7xl text-[#f8f5f0] hover:text-[#c8a96e] transition-colors duration-300">
+              {[...navLinks, { label: t('nav_contact'), to: '/contact' }, { label: t('nav_booking'), to: '/booking' }].map((link, i) => (
+                <motion.div key={link.to} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.07, duration: 0.5 }}>
+                  <Link to={link.to} onClick={() => setMenuOpen(false)} className="font-serif text-5xl text-[#f8f5f0] transition-colors duration-300 hover:text-[#c8a96e] md:text-7xl">
                     {link.label}
                   </Link>
                 </motion.div>
               ))}
             </nav>
 
-            {/* Bottom row */}
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}
-              className="absolute bottom-10 left-0 right-0 flex justify-between items-center px-10">
+              className="absolute bottom-10 left-0 right-0 flex items-center justify-between px-10">
               <div className="flex gap-4">
                 {languages.map(lang => (
                   <button key={lang} onClick={() => setLanguage(lang)}
-                    className={`text-[0.7rem] tracking-[0.2em] uppercase font-medium transition-colors
-                      ${language === lang ? 'text-[#c8a96e]' : 'text-[#6b6b6b] hover:text-white'}`}>
+                    className={`text-[0.7rem] font-medium uppercase tracking-[0.2em] transition-colors ${language === lang ? 'text-[#c8a96e]' : 'text-[#6b6b6b] hover:text-white'}`}>
                     {lang}
                   </button>
                 ))}
               </div>
+
+              <button type="button" onClick={() => setTheme(isDark ? 'light' : 'dark')}
+                className="text-[0.7rem] font-medium uppercase tracking-[0.2em] text-[#6b6b6b] transition-colors hover:text-white">
+                {isDark ? 'Day mode' : 'Night mode'}
+              </button>
+
               <Link to={user ? '/profile' : '/login'} onClick={() => setMenuOpen(false)}
-                className="text-[0.7rem] tracking-[0.2em] uppercase font-medium text-[#6b6b6b] hover:text-white transition-colors">
+                className="text-[0.7rem] font-medium uppercase tracking-[0.2em] text-[#6b6b6b] transition-colors hover:text-white">
                 {user ? t('nav_profile') : t('nav_login')}
               </Link>
+              {user?.role === 'admin' && (
+                <Link to="/admin" onClick={() => setMenuOpen(false)}
+                  className="text-[0.7rem] font-medium uppercase tracking-[0.2em] text-[#c8a96e] transition-colors hover:text-white">
+                  {t('nav_admin')}
+                </Link>
+              )}
             </motion.div>
 
-            <button onClick={() => setMenuOpen(false)}
-              className="absolute top-6 right-6 text-[#f8f5f0] p-2" aria-label="Close menu">
-              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button onClick={() => setMenuOpen(false)} className="absolute right-6 top-6 p-2 text-[#f8f5f0]" aria-label="Close menu">
+              <svg className="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>

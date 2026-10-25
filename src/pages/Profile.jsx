@@ -200,94 +200,108 @@ export default function Profile() {
 
             {/* Settings */}
             {activeTab === 2 && (
-              <div className="max-w-md space-y-6">
-                {settingMsg.text && (
-                  <div className={`flex items-center gap-2 rounded-xl px-4 py-3 text-sm
-                    ${settingMsg.type === 'success' ? 'bg-green-50 border border-green-100 text-green-700' : 'bg-red-50 border border-red-100 text-red-600'}`}>
-                    <span>{settingMsg.type === 'success' ? '✓' : '!'}</span> {settingMsg.text}
-                  </div>
-                )}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
 
-                {/* Display name */}
-                <div className="bg-white rounded-2xl border border-[#e0d9d0] p-6">
-                  <h3 className="font-serif text-xl mb-5">{t('prof_display_name')}</h3>
-                  <p className="text-[#9b9490] text-sm mb-4">
-                    {t('prof_current_name')}: <span className="font-medium text-[#1a1a1a]">{user.name}</span>
-                  </p>
-                  <label className="section-label block mb-1.5">{t('prof_new_name')}</label>
-                  <input type="text" value={displayName} onChange={e => setDisplayName(e.target.value)}
-                    placeholder={t('prof_new_name')}
-                    className="w-full border border-[#e0d9d0] rounded-xl px-4 py-3 text-sm outline-none focus:border-[#c8a96e] transition-colors mb-4" />
-                  <button onClick={handleUpdateName} disabled={settingLoading || !displayName.trim()}
-                    className="btn-ticket w-full justify-center text-sm disabled:opacity-40">
-                    {settingLoading ? t('prof_saving') : t('prof_save_name')}
+                {/* Сол колонка */}
+                <div className="space-y-8">
+                  {settingMsg.text && (
+                    <div className={`flex items-center gap-2 rounded-xl px-4 py-3 text-sm
+                      ${settingMsg.type === 'success' ? 'bg-green-50 border border-green-100 text-green-700' : 'bg-red-50 border border-red-100 text-red-600'}`}>
+                      <span>{settingMsg.type === 'success' ? '✓' : '!'}</span> {settingMsg.text}
+                    </div>
+                  )}
+
+                  {/* Display name */}
+                  <div className="bg-white rounded-2xl border border-[#e0d9d0] p-6">
+                    <h3 className="font-serif text-xl mb-5">{t('prof_display_name')}</h3>
+                    <p className="text-[#9b9490] text-sm mb-4">
+                      {t('prof_current_name')}: <span className="font-medium text-[#1a1a1a]">{user.name}</span>
+                    </p>
+                    <label className="section-label block mb-1.5">{t('prof_new_name')}</label>
+                    <input type="text" value={displayName} onChange={e => setDisplayName(e.target.value)}
+                      placeholder={t('prof_new_name')}
+                      className="w-full border border-[#e0d9d0] rounded-xl px-4 py-3 text-sm outline-none focus:border-[#c8a96e] transition-colors mb-4" />
+                    <button onClick={handleUpdateName} disabled={settingLoading || !displayName.trim()}
+                      className="btn-ticket w-full justify-center text-sm disabled:opacity-40">
+                      {settingLoading ? t('prof_saving') : t('prof_save_name')}
+                    </button>
+                  </div>
+
+                  {/* Change password */}
+                  <div className="bg-white rounded-2xl border border-[#e0d9d0] p-6">
+                    <h3 className="font-serif text-xl mb-5">{t('prof_change_pw')}</h3>
+                    <div className="space-y-4">
+                      <div>
+                        <label className="section-label block mb-1.5">{t('prof_current_pw')}</label>
+                        <input type="password" value={currentPassword} onChange={e => setCurrentPassword(e.target.value)}
+                          placeholder="••••••••"
+                          className="w-full border border-[#e0d9d0] rounded-xl px-4 py-3 text-sm outline-none focus:border-[#c8a96e] transition-colors" />
+                      </div>
+                      <div>
+                        <label className="section-label block mb-1.5">{t('prof_new_pw')}</label>
+                        <input type="password" value={newPassword} onChange={e => setNewPassword(e.target.value)}
+                          placeholder="••••••••"
+                          className="w-full border border-[#e0d9d0] rounded-xl px-4 py-3 text-sm outline-none focus:border-[#c8a96e] transition-colors" />
+                      </div>
+                      <button onClick={handleUpdatePassword} disabled={settingLoading}
+                        className="btn-ticket w-full justify-center text-sm disabled:opacity-40">
+                        {settingLoading ? t('prof_updating') : t('prof_update_pw')}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Оң колонка */}
+                <div className="space-y-8">
+
+                  {/* Account info */}
+                  <div className="bg-white rounded-2xl border border-[#e0d9d0] p-6">
+                    <h3 className="font-serif text-xl mb-4">{t('prof_account_info')}</h3>
+                    <div className="space-y-3 text-sm">
+                      <div className="flex justify-between py-2 border-b border-[#f0ebe3]">
+                        <span className="text-[#9b9490]">Email</span>
+                        <span className="font-medium text-[#1a1a1a]">{user.email}</span>
+                      </div>
+                      <div className="flex justify-between py-2 border-b border-[#f0ebe3]">
+                        <span className="text-[#9b9490]">UID</span>
+                        <span className="font-mono text-xs text-[#9b9490] truncate max-w-[160px]">{user.uid}</span>
+                      </div>
+                      <div className="flex justify-between py-2">
+                        <span className="text-[#9b9490]">{t('prof_tab_bookings')}</span>
+                        <span className="font-medium text-[#1a1a1a]">{bookings.length}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Notifications */}
+                  <div className="bg-white rounded-2xl border border-[#e0d9d0] p-6">
+                    <h3 className="font-serif text-xl mb-5">{t('prof_notifications')}</h3>
+                    {[
+                      { label: t('prof_notif_1'), desc: t('prof_notif_1_desc') },
+                      { label: t('prof_notif_2'), desc: t('prof_notif_2_desc') },
+                      { label: t('prof_notif_3'), desc: t('prof_notif_3_desc') },
+                    ].map(n => (
+                      <label key={n.label} className="flex items-center justify-between py-3 border-b border-[#f0ebe3] last:border-0 cursor-pointer">
+                        <div>
+                          <p className="text-sm font-medium text-[#1a1a1a]">{n.label}</p>
+                          <p className="text-[0.72rem] text-[#9b9490]">{n.desc}</p>
+                        </div>
+                        <input type="checkbox" defaultChecked className="accent-[#c8a96e] w-4 h-4" />
+                      </label>
+                    ))}
+                  </div>
+
+                  {/* Sign out */}
+                  <button onClick={handleLogout}
+                    className="w-full py-3 rounded-2xl border border-red-200 text-red-500 text-sm font-medium hover:bg-red-50 transition-colors flex items-center justify-center gap-2">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
+                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                    </svg>
+                    {t('prof_sign_out')}
                   </button>
                 </div>
 
-                {/* Change password */}
-                <div className="bg-white rounded-2xl border border-[#e0d9d0] p-6">
-                  <h3 className="font-serif text-xl mb-5">{t('prof_change_pw')}</h3>
-                  <div className="space-y-4">
-                    <div>
-                      <label className="section-label block mb-1.5">{t('prof_current_pw')}</label>
-                      <input type="password" value={currentPassword} onChange={e => setCurrentPassword(e.target.value)}
-                        placeholder="••••••••"
-                        className="w-full border border-[#e0d9d0] rounded-xl px-4 py-3 text-sm outline-none focus:border-[#c8a96e] transition-colors" />
-                    </div>
-                    <div>
-                      <label className="section-label block mb-1.5">{t('prof_new_pw')}</label>
-                      <input type="password" value={newPassword} onChange={e => setNewPassword(e.target.value)}
-                        placeholder="••••••••"
-                        className="w-full border border-[#e0d9d0] rounded-xl px-4 py-3 text-sm outline-none focus:border-[#c8a96e] transition-colors" />
-                    </div>
-                    <button onClick={handleUpdatePassword} disabled={settingLoading}
-                      className="btn-ticket w-full justify-center text-sm disabled:opacity-40">
-                      {settingLoading ? t('prof_updating') : t('prof_update_pw')}
-                    </button>
-                  </div>
-                </div>
-
-                {/* Account info */}
-                <div className="bg-white rounded-2xl border border-[#e0d9d0] p-6">
-                  <h3 className="font-serif text-xl mb-4">{t('prof_account_info')}</h3>
-                  <div className="space-y-3 text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-[#9b9490]">Email</span>
-                      <span className="font-medium text-[#1a1a1a]">{user.email}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-[#9b9490]">UID</span>
-                      <span className="font-mono text-xs text-[#9b9490] truncate max-w-[160px]">{user.uid}</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Notifications */}
-                <div className="bg-white rounded-2xl border border-[#e0d9d0] p-6">
-                  <h3 className="font-serif text-xl mb-5">{t('prof_notifications')}</h3>
-                  {[
-                    { label: t('prof_notif_1'), desc: t('prof_notif_1_desc') },
-                    { label: t('prof_notif_2'), desc: t('prof_notif_2_desc') },
-                    { label: t('prof_notif_3'), desc: t('prof_notif_3_desc') },
-                  ].map(n => (
-                    <label key={n.label} className="flex items-center justify-between py-3 border-b border-[#f0ebe3] last:border-0 cursor-pointer">
-                      <div>
-                        <p className="text-sm font-medium text-[#1a1a1a]">{n.label}</p>
-                        <p className="text-[0.72rem] text-[#9b9490]">{n.desc}</p>
-                      </div>
-                      <input type="checkbox" defaultChecked className="accent-[#c8a96e] w-4 h-4" />
-                    </label>
-                  ))}
-                </div>
-
-                <button onClick={handleLogout}
-                  className="w-full py-3 rounded-2xl border border-red-200 text-red-500 text-sm font-medium hover:bg-red-50 transition-colors flex items-center justify-center gap-2">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
-                      d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                  </svg>
-                  {t('prof_sign_out')}
-                </button>
               </div>
             )}
           </motion.div>

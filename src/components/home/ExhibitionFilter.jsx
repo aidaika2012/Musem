@@ -11,14 +11,18 @@ export default function ExhibitionFilter() {
   const navigate = useNavigate()
 
   const categories = [
-    t('filter_all_collections'),
-    'Classical Art', 'Ancient History', 'Modern Art', 'Contemporary Art', 'Cultural Heritage',
+    { key: '',                   label: t('filter_all_collections') },
+    { key: 'Classical Art',      label: t('cat_classical') },
+    { key: 'Ancient History',    label: t('cat_ancient') },
+    { key: 'Modern Art',         label: t('cat_modern') },
+    { key: 'Contemporary Art',   label: t('cat_contemporary') },
+    { key: 'Cultural Heritage',  label: t('cat_heritage') },
   ]
 
   const handleSearch = () => {
     const params = new URLSearchParams()
     if (search) params.set('q', search)
-    if (category && category !== t('filter_all_collections')) params.set('category', category)
+    if (category) params.set('category', category)
     if (date) params.set('date', date)
     navigate(`/exhibitions?${params.toString()}`)
   }
@@ -51,7 +55,7 @@ export default function ExhibitionFilter() {
             <label className="section-label">{t('filter_category')}</label>
             <select value={category} onChange={e => setCategory(e.target.value)}
               className="bg-transparent font-serif text-xl text-[#1a1a1a] outline-none cursor-pointer">
-              {categories.map(c => <option key={c}>{c}</option>)}
+              {categories.map(c => <option key={c.key} value={c.key}>{c.label}</option>)}
             </select>
           </div>
 
