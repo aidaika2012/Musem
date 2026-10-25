@@ -60,8 +60,8 @@ export default function Header() {
   return (
     <>
       <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${headerBackground} ${scrolled ? 'shadow-sm py-3' : 'py-5'}`}>
-        <div className="mx-auto flex max-w-[1400px] items-center justify-between px-6">
-          <nav className="hidden items-center gap-20 lg:flex">
+        <div className="mx-auto flex max-w-[1400px] items-center justify-between px-4 sm:px-6">
+          <nav className="hidden items-center gap-6 xl:flex">
             {navLinks.map(link => (
               <Link key={link.to} to={link.to}
                 className={`link-underline text-[0.75rem] font-medium tracking-[0.15em] uppercase transition-colors duration-300 ${navColor}`}>
@@ -71,12 +71,12 @@ export default function Header() {
           </nav>
 
           <Link to="/"
-            className={`font-serif text-2xl font-bold uppercase tracking-[0.35em] transition-colors duration-300 ${logoColor} absolute left-1/2 -translate-x-1/2`}>
+            className={`font-serif text-xl sm:text-2xl font-bold uppercase tracking-[0.2em] sm:tracking-[0.35em] transition-colors duration-300 ${logoColor} absolute left-1/2 -translate-x-1/2`}>
             MUSEUM
           </Link>
 
-          <div className="ml-auto flex items-center gap-8">
-            <div className="relative hidden md:block" ref={langRef}>
+          <div className="ml-auto flex items-center gap-3 xl:gap-6">
+            <div className="relative hidden xl:block" ref={langRef}>
               <button onClick={() => setLangOpen(v => !v)}
                 className={`flex items-center gap-1 text-[0.7rem] font-medium uppercase tracking-[0.2em] transition-colors duration-300 ${navColor}`}>
                 {language}
@@ -103,13 +103,13 @@ export default function Header() {
 
             <button type="button" onClick={() => setTheme(isDark ? 'light' : 'dark')}
               aria-label={`Switch to ${isDark ? 'light' : 'dark'} theme`}
-              className={`hidden items-center gap-2 rounded-full border border-white/20 bg-white/5 px-3 py-1.5 text-[0.65rem] font-medium uppercase tracking-[0.18em] transition-colors duration-300 md:flex ${navColor}`}>
+              className={`hidden items-center gap-2 rounded-full border border-white/20 bg-white/5 px-3 py-1.5 text-[0.65rem] font-medium uppercase tracking-[0.18em] transition-colors duration-300 xl:flex ${navColor}`}>
               <ThemeIcon isDark={isDark} />
               <span>{isDark ? 'Day' : 'Night'}</span>
             </button>
 
             <Link to={user ? '/profile' : '/login'}
-              className={`hidden items-center gap-1.5 text-[0.7rem] font-medium uppercase tracking-[0.15em] transition-colors duration-300 md:flex ${navColor}`}>
+              className={`hidden items-center gap-1.5 text-[0.7rem] font-medium uppercase tracking-[0.15em] transition-colors duration-300 xl:flex ${navColor}`}>
               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
                   d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
@@ -119,7 +119,7 @@ export default function Header() {
 
             {user?.role === 'admin' && (
               <Link to="/admin"
-                className={`hidden items-center gap-1.5 text-[0.7rem] font-medium uppercase tracking-[0.15em] transition-colors duration-300 md:flex ${navColor}`}>
+                className={`hidden items-center gap-1.5 text-[0.7rem] font-medium uppercase tracking-[0.15em] transition-colors duration-300 xl:flex ${navColor}`}>
                 <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
                     d="M10.343 3.94c.09-.542.56-.94 1.11-.94h1.093c.55 0 1.02.398 1.11.94l.149.894c.07.424.384.764.78.93.398.164.855.142 1.205-.108l.737-.527a1.125 1.125 0 011.45.12l.773.774c.39.389.44 1.002.12 1.45l-.527.737c-.25.35-.272.806-.107 1.204.165.397.505.71.93.78l.893.15c.543.09.94.56.94 1.109v1.094c0 .55-.397 1.02-.94 1.11l-.893.149c-.425.07-.765.383-.93.78-.165.398-.143.854.107 1.204l.527.738c.32.447.269 1.06-.12 1.45l-.774.773a1.125 1.125 0 01-1.449.12l-.738-.527c-.35-.25-.806-.272-1.203-.107-.397.165-.71.505-.781.929l-.149.894c-.09.542-.56.94-1.11.94h-1.094c-.55 0-1.019-.398-1.11-.94l-.148-.894c-.071-.424-.384-.764-.781-.93-.398-.164-.854-.142-1.204.108l-.738.527c-.447.32-1.06.269-1.45-.12l-.773-.774a1.125 1.125 0 01-.12-1.45l.527-.737c.25-.35.273-.806.108-1.204-.165-.397-.505-.71-.93-.78l-.894-.15c-.542-.09-.94-.56-.94-1.109v-1.094c0-.55.398-1.02.94-1.11l.894-.149c.424-.07.765-.383.93-.78.165-.398.143-.854-.108-1.204l-.526-.738a1.125 1.125 0 01.12-1.45l.773-.773a1.125 1.125 0 011.45-.12l.737.527c.35.25.807.272 1.204.107.397-.165.71-.505.78-.929l.15-.894z" />
@@ -129,7 +129,7 @@ export default function Header() {
               </Link>
             )}
 
-            <Link to="/booking" className="hidden md:block btn-ticket text-[0.7rem]">
+            <Link to="/booking" className="hidden xl:block btn-ticket text-[0.7rem]">
               {t('nav_tickets')}
             </Link>
 
@@ -154,7 +154,7 @@ export default function Header() {
             <nav className="flex flex-col items-center gap-8">
               {[...navLinks, { label: t('nav_contact'), to: '/contact' }, { label: t('nav_booking'), to: '/booking' }].map((link, i) => (
                 <motion.div key={link.to} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.07, duration: 0.5 }}>
-                  <Link to={link.to} onClick={() => setMenuOpen(false)} className="font-serif text-5xl text-[#f8f5f0] transition-colors duration-300 hover:text-[#c8a96e] md:text-7xl">
+                  <Link to={link.to} onClick={() => setMenuOpen(false)} className="mx-4 text-center font-serif text-[clamp(2.5rem,9vw,4.5rem)] text-[#f8f5f0] transition-colors duration-300 hover:text-[#c8a96e] md:text-7xl">
                     {link.label}
                   </Link>
                 </motion.div>
@@ -162,7 +162,7 @@ export default function Header() {
             </nav>
 
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}
-              className="absolute bottom-10 left-0 right-0 flex items-center justify-between px-10">
+              className="absolute bottom-6 left-0 right-0 flex flex-wrap items-center justify-center gap-x-6 gap-y-4 px-5 sm:bottom-10 sm:justify-between sm:px-10">
               <div className="flex gap-4">
                 {languages.map(lang => (
                   <button key={lang} onClick={() => setLanguage(lang)}

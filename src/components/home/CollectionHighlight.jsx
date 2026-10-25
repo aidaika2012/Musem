@@ -82,7 +82,7 @@ export default function CollectionHighlight() {
           </h2>
           <p className="text-[#6b6b6b] text-base leading-relaxed max-w-md mb-10">{t('col_desc')}</p>
           <Link to="/collection" className="btn-outline mb-14 inline-flex">{t('col_explore')}</Link>
-          <div className="grid grid-cols-3 gap-8 mt-8 pt-8 border-t border-[#e0d9d0]">
+          <div className="grid grid-cols-3 gap-3 sm:gap-8 mt-8 pt-8 border-t border-[#e0d9d0]">
             {stats.map(s => <StatCounter key={s.label} stat={s} triggered={triggered} label={s.label} />)}
           </div>
         </div>

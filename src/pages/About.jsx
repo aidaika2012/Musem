@@ -100,7 +100,7 @@ export default function About() {
           <p className="section-label mb-3">{t('about_timeline_label')}</p>
           <h2 className="font-serif text-4xl mb-12">{t('about_timeline_title')}</h2>
           <div ref={timelineRef} className="relative">
-            <div className="absolute left-[72px] md:left-[96px] top-0 bottom-0 w-px bg-[#e0d9d0]" />
+            <div className="absolute left-8 md:left-12 top-0 bottom-0 w-px bg-[#e0d9d0]" />
             <div className="space-y-10">
               {timelineData.map(item => (
                 <div key={item.year} className="tl-item flex gap-6 md:gap-10 relative">

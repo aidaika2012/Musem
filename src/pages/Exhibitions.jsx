@@ -83,7 +83,7 @@ export default function Exhibitions() {
               </FilterChip>
             ))}
           </div>
-          <SearchInput value={searchQ} onChange={setSearchQ} placeholder={t('exh_search_ph')} className="min-w-[260px]" />
+          <SearchInput value={searchQ} onChange={setSearchQ} placeholder={t('exh_search_ph')} className="w-full min-w-0 md:w-auto md:min-w-[260px]" />
         </div>
       </Container>
 

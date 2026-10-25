@@ -56,6 +56,11 @@ body {
   transition: background-color 0.25s ease, color 0.25s ease;
 }
 
+#root {
+  width: 100%;
+  overflow-x: clip;
+}
+
 html[data-theme='dark'] [class~="bg-white"],
 html[data-theme='dark'] [class~="bg-[#f8f5f0]"] {
   background-color: var(--museum-surface);
@@ -142,7 +147,7 @@ html[data-theme='dark'] [class~="border-[#1a1a1a]"] {
 .link-underline:hover::after { width: 100%; }
 
 /* ── Ticket button ── */
-.btn-ticket {
+.btn-ticket:not(.hidden) {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -215,4 +220,22 @@ html[data-theme='dark'] [class~="border-[#1a1a1a]"] {
 /* ── Overlay gradient ── */
 .overlay-dark {
   background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.7) 100%);
+}
+
+@media (max-width: 639px) {
+  .section-title {
+    font-size: clamp(2.25rem, 9vw, 3.25rem);
+    line-height: 1.08;
+  }
+
+  main .rounded-3xl.p-8 {
+    padding: 1.25rem;
+  }
+
+  main .btn-ticket,
+  main .btn-outline {
+    max-width: 100%;
+    white-space: normal;
+    text-align: center;
+  }
 }

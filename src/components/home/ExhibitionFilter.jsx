@@ -30,13 +30,13 @@ export default function ExhibitionFilter() {
   return (
     <section className="py-16 px-6 max-w-[1400px] mx-auto">
       <div className="bg-white rounded-3xl shadow-sm border border-[#e0d9d0] p-6 md:p-8">
-        <div className="flex flex-col md:flex-row items-stretch gap-4">
+        <div className="grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2 xl:grid-cols-[1fr_1fr_1fr_2fr_auto]">
 
           {/* Type */}
-          <div className="flex-1 flex flex-col gap-1.5 border-b md:border-b-0 md:border-r border-[#e0d9d0] pb-4 md:pb-0 md:pr-6">
+          <div className="flex min-w-0 flex-col gap-1.5 border-b border-[#e0d9d0] pb-4 xl:border-b-0 xl:border-r xl:pb-0 xl:pr-6">
             <label className="section-label">{t('filter_type')}</label>
             <select value={type} onChange={e => setType(e.target.value)}
-              className="bg-transparent font-serif text-xl text-[#1a1a1a] outline-none cursor-pointer">
+              className="w-full min-w-0 bg-transparent font-serif text-base sm:text-xl text-[#1a1a1a] outline-none cursor-pointer">
               <option value="">{t('filter_exhibition')}</option>
               <option>{t('filter_collection')}</option>
               <option>{t('filter_event')}</option>
@@ -44,32 +44,32 @@ export default function ExhibitionFilter() {
           </div>
 
           {/* Date */}
-          <div className="flex-1 flex flex-col gap-1.5 border-b md:border-b-0 md:border-r border-[#e0d9d0] pb-4 md:pb-0 md:pr-6">
+          <div className="flex min-w-0 flex-col gap-1.5 border-b border-[#e0d9d0] pb-4 xl:border-b-0 xl:border-r xl:pb-0 xl:pr-6">
             <label className="section-label">{t('filter_date')}</label>
             <input type="date" value={date} onChange={e => setDate(e.target.value)}
-              className="bg-transparent font-serif text-xl text-[#1a1a1a] outline-none cursor-pointer" />
+              className="w-full min-w-0 bg-transparent font-serif text-base sm:text-xl text-[#1a1a1a] outline-none cursor-pointer" />
           </div>
 
           {/* Category */}
-          <div className="flex-1 flex flex-col gap-1.5 border-b md:border-b-0 md:border-r border-[#e0d9d0] pb-4 md:pb-0 md:pr-6">
+          <div className="flex min-w-0 flex-col gap-1.5 border-b border-[#e0d9d0] pb-4 xl:border-b-0 xl:border-r xl:pb-0 xl:pr-6">
             <label className="section-label">{t('filter_category')}</label>
             <select value={category} onChange={e => setCategory(e.target.value)}
-              className="bg-transparent font-serif text-xl text-[#1a1a1a] outline-none cursor-pointer">
+              className="w-full min-w-0 bg-transparent font-serif text-base sm:text-xl text-[#1a1a1a] outline-none cursor-pointer">
               {categories.map(c => <option key={c.key} value={c.key}>{c.label}</option>)}
             </select>
           </div>
 
           {/* Search */}
-          <div className="flex-[2] flex flex-col gap-1.5 md:pr-4">
+          <div className="flex min-w-0 flex-col gap-1.5 xl:pr-4">
             <label className="section-label">{t('filter_search')}</label>
             <input type="text" value={search} onChange={e => setSearch(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && handleSearch()}
               placeholder={t('filter_placeholder')}
-              className="bg-transparent font-serif text-xl text-[#1a1a1a] outline-none placeholder:text-[#c0b9b0]" />
+              className="w-full min-w-0 bg-transparent font-serif text-base sm:text-xl text-[#1a1a1a] outline-none placeholder:text-[#c0b9b0]" />
           </div>
 
           {/* Button */}
-          <div className="flex items-end">
+          <div className="flex items-end sm:col-span-2 sm:justify-end xl:col-span-1">
             <button onClick={handleSearch} aria-label={t('filter_search')}
               className="w-14 h-14 rounded-full bg-[#1a1a1a] flex items-center justify-center hover:bg-[#c8a96e] transition-colors duration-300 flex-shrink-0">
               <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">

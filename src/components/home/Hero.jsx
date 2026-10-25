@@ -48,7 +48,7 @@ export default function Hero() {
   }, [])
 
   return (
-    <section ref={sectionRef} className="relative w-full overflow-hidden" style={{ height: '92vh', minHeight: 600 }}>
+    <section ref={sectionRef} className="relative h-[92svh] min-h-[520px] w-full overflow-hidden sm:min-h-[600px]">
       <div className="absolute inset-0 overflow-hidden rounded-b-[2.5rem]">
         <img ref={imgRef}
           src="https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?w=1800&q=85"
@@ -62,7 +62,7 @@ export default function Hero() {
         <div ref={titleRef} className="overflow-hidden flex" aria-label="MUSEUM">
           {'MUSEUM'.split('').map((letter, i) => (
             <span key={i} className="hero-letter font-serif text-white leading-none select-none"
-              style={{ fontSize: 'clamp(5rem,16vw,18rem)', letterSpacing: '-0.02em', display: 'inline-block' }}>
+              style={{ fontSize: 'clamp(3.5rem,14vw,18rem)', letterSpacing: '-0.02em', display: 'inline-block' }}>
               {letter}
             </span>
           ))}
@@ -85,7 +85,7 @@ export default function Hero() {
         </div>
       </div>
 
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-60">
+      <div className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 opacity-60 sm:flex">
         <span className="text-white text-[0.65rem] tracking-[0.25em] uppercase">{t('hero_scroll')}</span>
         <div className="w-px h-10 bg-white/50 animate-[pulse_2s_ease-in-out_infinite]" />
       </div>
